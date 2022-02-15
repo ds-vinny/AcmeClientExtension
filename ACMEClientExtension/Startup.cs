@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DirectScale.Disco.Extension.Middleware;
 
 namespace ACMEClientExtension
 {
@@ -24,6 +25,10 @@ namespace ACMEClientExtension
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            services.AddDirectScale(options =>
+            {
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,6 +50,8 @@ namespace ACMEClientExtension
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseDirectScale();
 
             app.UseEndpoints(endpoints =>
             {
