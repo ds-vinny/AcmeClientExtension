@@ -1,5 +1,5 @@
-﻿using IntegrationClientExtension.Models;
-using IntegrationClientExtension.Models.CustomPage;
+﻿using ACMEClientExtension.Models;
+using ACMEClientExtension.Models.CustomPage;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
@@ -9,7 +9,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace IntegrationClientExtension.Controllers
+namespace ACMEClientExtension.Controllers
 {
     public class CustomPageController : Controller
     {

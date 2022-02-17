@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace IntegrationClientExtension.Models.CustomPage
+namespace ACMEClientExtension.Models.CustomPage
 {
     public class HelloWorldViewModel
     {
