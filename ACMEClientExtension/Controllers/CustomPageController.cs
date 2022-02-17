@@ -24,7 +24,6 @@ namespace ACMEClientExtension.Controllers
             _associateService = associateService ?? throw new ArgumentNullException(nameof(associateService));
         }
 
-        [ExtensionAuthorize] // This authenticates that the request is coming from DirectScale
         public IActionResult HelloWorld([FromQuery]string personsName)
         {
             var model = new HelloWorldViewModel();
