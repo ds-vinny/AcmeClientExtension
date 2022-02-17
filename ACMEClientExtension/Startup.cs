@@ -28,6 +28,8 @@ namespace ACMEClientExtension
 
             services.AddDirectScale(options =>
             {
+                // This Page and Page Link will show for all users in the DirectScale Platform
+                options.AddCustomPage(DirectScale.Disco.Extension.Middleware.Models.Menu.Toolbar, "Hello John", "/CustomPage/HelloWorld?personsName=John");
             });
         }
 

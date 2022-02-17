@@ -1,0 +1,53 @@
+﻿@model IntegrationClientExtension.Models.CustomPage.TestingViewModel
+
+@{
+    ViewData["Title"] = "Hello World Page";
+}
+
+@if (Model.PersonsName == null)
+{
+    <h4 id="pageTitle">Hello World!</h4>
+}
+else
+{
+    <h4 id="pageTitle">Hello @Model.PersonsName!</h4>
+}
+
+<div>
+    <p>This is an example of a Custom Page</p>
+</div>
+<hr />
+
+@if (Model.QueryStringParameters != null && Model.QueryStringParameters.Count > 0)
+{
+<div>
+    <h6>Query String Values</h6>
+    <ul style="display: block; list-style-type: disc; margin-top: 1em; margin-bottom: 1 em; margin-left: 0; margin-right: 0; padding-left: 40px;">
+        @foreach(var kvp in Model.QueryStringParameters)
+        {
+        <li id="queryString_@kvp.Key">
+            @kvp.Key: @kvp.Value
+        </li>
+        }
+    </ul>
+</div>
+<hr />
+}
+@if (Model.Headers != null && Model.Headers.Count > 0)
+{
+<div>
+    <h6>Headers</h6>
+    <ul style="display: block; list-style-type: disc; margin-top: 1em; margin-bottom: 1 em; margin-left: 0; margin-right: 0; padding-left: 40px;">
+        @foreach(var kvp in Model.Headers)
+        {
+        <li id="headers_@kvp.Key">
+            @kvp.Key: @kvp.Value
+        </li>
+        }
+    </ul>
+</div>
+}
+<br />
+<div>
+    <a asp-controller="Home" asp-action="Index">Back to List</a>
+</div>
