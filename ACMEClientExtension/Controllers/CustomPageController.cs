@@ -46,7 +46,7 @@ namespace ACMEClientExtension.Controllers
             return View(model);
         }
 
-        // Purposely Not including an Auth Attribute yet.
+        [ExtensionAuthorize] // This authenticates that the request is coming from DirectScale
         public async Task<IActionResult> SecuredHelloWorld([FromQuery] int associateId)
         {
             var model = new SecuredHelloWorldViewModel();
