@@ -17,11 +17,13 @@ namespace ACMEClientExtension.Controllers
     {
         private readonly ILogger<CustomPageController> _logger;
         private readonly IAssociateService _associateService;
+        private readonly ICurrentUser _currentUser;
 
-        public CustomPageController(ILogger<CustomPageController> logger, IAssociateService associateService)
+        public CustomPageController(ILogger<CustomPageController> logger, IAssociateService associateService, ICurrentUser currentUser)
         {
             _logger = logger;
             _associateService = associateService ?? throw new ArgumentNullException(nameof(associateService));
+            _currentUser = currentUser ?? throw new ArgumentNullException(nameof(currentUser));
         }
 
         public IActionResult HelloWorld([FromQuery]string personsName)
@@ -49,6 +51,12 @@ namespace ACMEClientExtension.Controllers
         [ExtensionAuthorize] // This authenticates that the request is coming from DirectScale
         public async Task<IActionResult> SecuredHelloWorld([FromQuery] int associateId)
         {
+            // Authorizes the page to only users that have the ViewAdministration right.
+            if (_currentUser.Rights.Contains("ViewAdministration") == false)
+            {
+                return new ForbidResult();
+            }
+
             var model = new SecuredHelloWorldViewModel();
 
             // Use Directscale Service to get associate information
