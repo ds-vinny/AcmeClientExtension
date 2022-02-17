@@ -1,5 +1,6 @@
 ﻿using ACMEClientExtension.Models;
 using ACMEClientExtension.Models.CustomPage;
+using DirectScale.Disco.Extension.Middleware;
 using DirectScale.Disco.Extension.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -23,6 +24,7 @@ namespace ACMEClientExtension.Controllers
             _associateService = associateService ?? throw new ArgumentNullException(nameof(associateService));
         }
 
+        [ExtensionAuthorize] // This authenticates that the request is coming from DirectScale
         public IActionResult HelloWorld([FromQuery]string personsName)
         {
             var model = new HelloWorldViewModel();
