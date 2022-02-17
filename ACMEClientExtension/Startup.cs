@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DirectScale.Disco.Extension.Middleware;
+using DirectScale.Disco.Extension.Middleware.Models;
 
 namespace ACMEClientExtension
 {
@@ -29,7 +30,12 @@ namespace ACMEClientExtension
             services.AddDirectScale(options =>
             {
                 // This Page and Page Link will show for all users in the DirectScale Platform
-                options.AddCustomPage(DirectScale.Disco.Extension.Middleware.Models.Menu.Toolbar, "Hello John", "/CustomPage/HelloWorld?personsName=John");
+                options.AddCustomPage(Menu.Toolbar, "Hello John", "/CustomPage/HelloWorld?personsName=John");
+
+                // This Page and Page Link will show for users that have the 'ViewAdministration' right in the DirectScale Platform
+                // If the /CustomPage/SecuredHelloWorld page does not have an authorization attribute it can be accessed by anyone with the following URL
+                // https://acme.clientextension.directscale<environment>.com/CustomPage/SecuredHelloWorld
+                options.AddCustomPage(Menu.AssociateDetail, "Hello Associate", "ViewAdministration", "/CustomPage/SecuredHelloWorld");
             });
         }
 
