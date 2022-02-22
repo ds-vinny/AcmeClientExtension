@@ -38,7 +38,9 @@ namespace ACMEClientExtension
                 // https://acme.clientextension.directscale<environment>.com/CustomPage/SecuredHelloWorld
                 options.AddCustomPage(Menu.AssociateDetail, "Hello Associate", "ViewAdministration", "/CustomPage/SecuredHelloWorld");
 
+                // Hooks
                 options.AddHook<CreateAutoshipHook>();
+                options.AddHook<GetAutoshipsHook>();
             });
         }
 
