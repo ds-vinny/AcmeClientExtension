@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using DirectScale.Disco.Extension.Middleware;
 using DirectScale.Disco.Extension.Middleware.Models;
+using ACMEClientExtension.Hooks.Autoships;
 
 namespace ACMEClientExtension
 {
@@ -36,6 +37,8 @@ namespace ACMEClientExtension
                 // If the /CustomPage/SecuredHelloWorld page does not have an authorization attribute it can be accessed by anyone with the following URL
                 // https://acme.clientextension.directscale<environment>.com/CustomPage/SecuredHelloWorld
                 options.AddCustomPage(Menu.AssociateDetail, "Hello Associate", "ViewAdministration", "/CustomPage/SecuredHelloWorld");
+
+                options.AddHook<CreateAutoshipHook>();
             });
         }
 
