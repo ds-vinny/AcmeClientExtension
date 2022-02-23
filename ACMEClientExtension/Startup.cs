@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using DirectScale.Disco.Extension.Middleware;
 using DirectScale.Disco.Extension.Middleware.Models;
 using ACMEClientExtension.Hooks.Autoships;
+using ACMEClientExtension.Hooks.Orders;
 
 namespace ACMEClientExtension
 {
@@ -41,6 +42,7 @@ namespace ACMEClientExtension
                 // Hooks
                 options.AddHook<CreateAutoshipHook>();
                 options.AddHook<GetAutoshipsHook>();
+                options.AddHook<SubmitOrderHook>();
             });
         }
 
