@@ -20,6 +20,7 @@ namespace ACMEClientExtension.Controllers.Hooks
             _hookCallback = hookCallback ?? throw new ArgumentNullException(nameof(hookCallback));
         }
 
+        [HttpPost]
         public async Task<ActionResult<CreateAutoshipHookResponse>> CreateAutoshipHook([FromBody] CreateAutoshipHookRequest request, [FromHeader] string callbackToken)
         {
             // This is an Example of a Before Hook
@@ -32,6 +33,7 @@ namespace ACMEClientExtension.Controllers.Hooks
             return Ok(response);
         }
 
+        [HttpPost]
         public async Task<ActionResult<GetAutoshipsHookResponse>> GetAutoshipsHook([FromBody] GetAutoshipsHookRequest request, [FromHeader] string callbackToken)
         {
             // This is an Example of an After Hook
