@@ -41,10 +41,11 @@ namespace ACMEClientExtension
 
                 // Hooks
                 //options.AddHook<CreateAutoshipHook>();  // Hooks can only be registered once.
-                options.AddHook<GetAutoshipsHook>();
+                //options.AddHook<GetAutoshipsHook>();  // Hooks can only be registered once.
                 options.AddHook<SubmitOrderHook>();
-                // Here is an example of how to register a Hook with the AddHook(string, string) method
+                // Here are some example of how to register a Hook with the AddHook(string, string) method
                 options.AddHook("Autoships.CreateAutoship", "/api/hooks/AutoshipHooks/CreateAutoshipHook");
+                options.AddHook("Autoships.GetAutoshipsHook", "/api/hooks/AutoshipHooks/GetAutoshipsHook");
             });
         }
 
