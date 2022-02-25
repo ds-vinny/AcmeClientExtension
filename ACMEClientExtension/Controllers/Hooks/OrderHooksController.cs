@@ -40,7 +40,7 @@ namespace ACMEClientExtension.Controllers.Hooks
         // The example below would be most performant by using the DirectScale Event System that functions out-of-process (Asynchrously).
         // The Event System can notify the Client Extension that an order was created and the Client Extension could then create a
         // coupon out-of-process instead of adding overhead during the order creation process.
-        [HttpPost]
+        [HttpPost("SubmitOrderHook")]
         public async Task<ActionResult<SubmitOrderHookResponse>> SubmitOrderHook([FromBody] SubmitOrderHookRequest request, [FromHeader] string callbackToken)
         {
             // Execute the DirectScale callback method first
