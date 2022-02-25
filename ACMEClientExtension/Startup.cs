@@ -40,9 +40,11 @@ namespace ACMEClientExtension
                 options.AddCustomPage(Menu.AssociateDetail, "Hello Associate", "ViewAdministration", "/CustomPage/SecuredHelloWorld");
 
                 // Hooks
-                options.AddHook<CreateAutoshipHook>();
+                //options.AddHook<CreateAutoshipHook>();  // Hooks can only be registered once.
                 options.AddHook<GetAutoshipsHook>();
                 options.AddHook<SubmitOrderHook>();
+                // Here is an example of how to register a Hook with the AddHook(string, string) method
+                options.AddHook("Autoships.CreateAutoship", "/api/hooks/AutoshipHooks/CreateAutoshipHook");
             });
         }
 
