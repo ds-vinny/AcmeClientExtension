@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DirectScale.Disco.Extension.Abstractions" Version="0.0.14187" />
+    <PackageReference Include="DirectScale.Disco.Extension.Abstractions" Version="1.0.5063" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.10" />
   </ItemGroup>
 
