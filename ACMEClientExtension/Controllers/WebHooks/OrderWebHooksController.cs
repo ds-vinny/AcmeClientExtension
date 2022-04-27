@@ -1,4 +1,5 @@
 ﻿using DirectScale.Disco.Extension;
+using DirectScale.Disco.Extension.EventModels;
 using DirectScale.Disco.Extension.Middleware;
 using DirectScale.Disco.Extension.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -29,7 +30,7 @@ namespace ACMEClientExtension.Controllers.WebHooks
         }
 
         [HttpPost("CreateOrder")]
-        public async Task<ActionResult> CreateOrderWebHook([FromBody] OrderCreatedMessage request)
+        public async Task<ActionResult> CreateOrderWebHook([FromBody] CreateOrderEvent request)
         {
             // *******|  WARNING READ BEST PRACTICES!!!  |*******
             // ALTHOUGH THIS CODE SEEMS FUNCTIONAL IT DOES NOT ACCOUNT FOR 
@@ -44,7 +45,7 @@ namespace ACMEClientExtension.Controllers.WebHooks
             // by giving any Distributor Type Associate an automatic 10 dollars off
             // their next order during january for every order they placed in December.
 
-            var associate = await _associateService.GetAssociate(request.AssociateId);
+            var associate = await _associateService.GetAssociate(request.CustomerId);
 
             if (associate.AssociateBaseType == DistributorAssociateType && DateTime.Now.Month == December)
             {
