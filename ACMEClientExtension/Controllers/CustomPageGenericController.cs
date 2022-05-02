@@ -138,11 +138,6 @@ namespace ACMEClientExtension.Controllers
 
                 string responseBody = new StreamReader(response.Content.ReadAsStream()).ReadToEnd();
 
-                if (response.IsSuccessStatusCode == false)
-                {
-                    throw ExtensionException.FromHttpResponse(responseBody, response.ToString(), "Disco call", endpoint);
-                }
-
                 return JsonConvert.DeserializeObject<TResult>(responseBody);
             }
 
