@@ -48,6 +48,9 @@ namespace ACMEClientExtension
                 //options.AddHook("Autoships.CreateAutoship", "/api/hooks/AutoshipHooks/CreateAutoshipHook");
                 //options.AddHook("Autoships.GetAutoships", "/api/hooks/AutoshipHooks/GetAutoshipsHook");
                 //options.AddHook("Orders.SubmitOrder", "/api/hooks/OrderHooks/SubmitOrderHook");
+
+                // WebHooks
+                options.AddEventHandler("OrderCreated", "/api/webhooks/Order/CreateOrder");
             });
 
             services.Configure<IISServerOptions>(options =>
