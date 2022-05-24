@@ -1,0 +1,158 @@
+﻿@model ACMEClientExtension.Models.Merchants.Stripe.AddCardFrameViewModel
+
+@{
+    Layout = "~/Views/Shared/_EmptyLayout.cshtml";
+}
+
+<head>
+    <link href="~/css/iframe-stripe.css" rel="stylesheet" />
+
+    <!-- JQuery -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <!-- Stripe -->
+    <script src="https://js.stripe.com/v3/"></script>
+    <script>
+
+        $(document).ready(function () {
+            // Creates a form on the page that will send information to the Stripe APIs using the stripe JS library.
+            var stripe = Stripe('@Model.PublicApiKey');
+            var elements = stripe.elements();
+            var card = elements.create('card', {
+                hidePostalCode: true,
+                style: {
+                    base: {
+                        iconColor: '#F99A52',
+                        color: '#32315E',
+                        lineHeight: '48px',
+                        fontWeight: 400,
+                        fontFamily: '"Helvetica Neue", "Helvetica", sans-serif',
+                        fontSize: '15px',
+
+                        '::placeholder': {
+                            color: '#CFD7DF',
+                        }
+                    },
+                }
+            });
+            card.mount('#card-element');
+
+            card.on('change', function (event) {
+                stripeFunctions.setOutcome(event);
+            });
+
+            // Sets Listener For Submit Button and sends the response of the API Call from when Save is Clicked to the SetOutcome Function.
+            document.querySelector('form').addEventListener('submit', function (e) {
+                e.preventDefault();
+                var form = document.querySelector('form');
+                var extraDetails = {
+                    name: form.querySelector('input[name=cardholder-name]').value,
+                    address_zip: form.querySelector('input[name=address-zip]').value
+                };
+                stripe.createToken(card, extraDetails).then(stripeFunctions.setOutcome);
+            });
+        });
+
+        var stripeFunctions = {
+
+            addCardToCustomer: function (sourceToken) {
+                return $.ajax({
+                    url: '/api/Merchants/Stripe/AddCardToCustomer',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        "payorId": "@Model.PayorId",
+                        "sourceToken": sourceToken,
+                    }),
+                    method: "POST",
+                });
+            },
+
+            sendParentFramePaymentMetadata: function (token) {
+                var data = {};
+                data.CardType = token.card.brand;
+                data.Token = token.card.id;
+                data.Last4 = token.card.last4;
+                data.ExpireMonth = token.card.exp_month;
+                data.ExpireYear = token.card.exp_year;
+
+                window.parent.postMessage(data, "*");
+            },
+
+            sendParentFrameError: function (errorMessage) {
+                var data = {};
+                data.ErrorMessage = errorMessage;
+
+                window.parent.postMessage(data, "*");
+            },
+
+            // Not Used - Can be called to close the iframe window if the form has a cancel button.
+            closeParentFrame: function () {
+                var data = {};
+                data.CloseMerchantFrame = true;
+
+                window.parent.postMessage(data, "*");
+            },
+
+            // Not Used - Can be called if the payment is already saved to the directscale system through the Extension API
+            reloadParentPaymentMethods: function () {
+                var data = {};
+                data.ReloadPaymentMethods = true;
+
+                window.parent.postMessage(data, "*");
+            },
+
+            setOutcome: function (result) {
+                var errorElement = document.querySelector('.error');
+                errorElement.classList.remove('visible');
+
+                if (result.token) {
+                    stripeFunctions.addCardToCustomer(result.token.id)
+                    .done(function(data) {
+                        stripeFunctions.sendParentFramePaymentMetadata(result.token);
+                    })
+                    .fail(function(data) {
+                        var errorText = "There was an error saving the card. Please contact customer service.";
+                        if (data.responseJSON.hasOwnProperty(ExceptionMessage)) {
+                            errorText = data.responseJSON.ExceptionMessage;
+                        }
+
+                        sendParentFrameError(errorText)
+                    });
+
+                }
+                else if (result.error) {
+                    errorElement.textContent = result.error.message;
+                    errorElement.classList.add('visible');
+                }
+            }
+        }
+
+    </script>
+</head>
+
+<div id="container" class="container">
+    <form>
+        <label>
+            <span>Name</span>
+            <input name="cardholder-name" class="field" placeholder="Your Name" />
+        </label>
+        <label>
+            <span>Phone</span>
+            <input class="field" placeholder="(555) 555-5555" type="tel" />
+        </label>
+        <label>
+            <span>Postal Code</span>
+            <input name="address-zip" class="field" placeholder="55555" />
+        </label>
+        <label>
+            <span>Card Number</span>
+            <div id="card-element" class="field"></div>
+        </label>
+        <button type="submit">Save Payment</button>
+        <div class="outcome">
+            <div class="error" role="alert"></div>
+        </div>
+    </form>
+</div>

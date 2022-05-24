@@ -1,0 +1,148 @@
+﻿.container {
+    max-width: 550px !important;
+}
+
+* {
+    font-family: "Helvetica Neue", Helvetica, sans-serif;
+    font-size: 15px;
+    font-variant: normal;
+    padding: 0;
+    margin: 0;
+}
+
+.ja {
+    font-family: meiryo, sans-serif;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    background: #F6F9FC;
+    display: flex;
+    align-items: center;
+    min-height: 100%;
+}
+
+form {
+    width: 480px;
+    margin: 20px auto;
+}
+
+label {
+    position: relative;
+    color: #6A7C94;
+    font-weight: 400;
+    margin-top: 10px;
+    display: grid;
+}
+
+
+.field {
+    background: white;
+    box-sizing: border-box;
+    font-weight: 400;
+    border: 1px solid #CFD7DF;
+    border-radius: 24px;
+    color: #32315E;
+    outline: none;
+    line-height: 48px;
+    padding: 0 20px;
+    cursor: text;
+    width: 65%;
+    /*float: right;*/
+}
+
+    .field::-webkit-input-placeholder {
+        color: #CFD7DF;
+    }
+
+    .field::-moz-placeholder {
+        color: #CFD7DF;
+    }
+
+    .field:-ms-input-placeholder {
+        color: #CFD7DF;
+    }
+
+    .field:focus,
+    .field.StripeElement--focus {
+        border-color: #F99A52;
+    }
+
+button {
+    float: left;
+    display: block;
+    background-image: linear-gradient(-180deg, #00c1d5 0%, #00c1d5 100%);
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,0.10), inset 0 -1px 0 0 #94f5ff;
+    color: white;
+    border-radius: 24px;
+    border: 0;
+    margin-top: 20px;
+    font-size: 17px;
+    font-weight: 500;
+    width: 65%;
+    height: 48px;
+    line-height: 48px;
+    outline: none;
+}
+
+    button:focus {
+        background: #94f5ff;
+    }
+
+    button:active {
+        background: #00c1d5;
+    }
+
+.outcome {
+    float: left;
+    width: 100%;
+    padding-top: 8px;
+    min-height: 20px;
+    text-align: center;
+}
+
+.success, .error {
+    display: none;
+    font-size: 13px;
+}
+
+    .success.visible, .error.visible {
+        display: inline;
+    }
+
+.error {
+    color: #E4584C;
+}
+
+.success {
+    color: #F8B563;
+}
+
+    .success .token {
+        font-weight: 500;
+        font-size: 13px;
+    }
+
+@media screen and (min-width: 480px) {
+    .field {
+        float: right;
+        height: 48px;
+    }
+
+    label {
+        display: block;
+        height: 48px;
+        line-height: 48px;
+    }
+
+        label > span {
+            float: left;
+        }
+
+    button {
+        width: 100%;
+    }
+}

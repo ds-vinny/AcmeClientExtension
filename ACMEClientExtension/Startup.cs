@@ -12,6 +12,8 @@ using DirectScale.Disco.Extension.Middleware;
 using DirectScale.Disco.Extension.Middleware.Models;
 using ACMEClientExtension.Hooks.Autoships;
 using ACMEClientExtension.Hooks.Orders;
+using ACMEClientExtension.Merchants.Stripe;
+using ACMEClientExtension.Merchants.Stripe.Interfaces;
 
 namespace ACMEClientExtension
 {
@@ -28,6 +30,9 @@ namespace ACMEClientExtension
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            services.AddSingleton<IStripeSettings, StripeSettings>();
+            services.AddSingleton<IStripeService, StripeService>();
 
             services.AddDirectScale(options =>
             {
@@ -51,6 +56,10 @@ namespace ACMEClientExtension
 
                 // WebHooks
                 options.AddEventHandler("OrderCreated", "/api/webhooks/Order/CreateOrder");
+                
+                // Merchants
+                options.AddMerchant<StripeMoneyInMerchantUsd>(9002, "Stripe Custom", "An example merchant", "USD");
+                options.AddMerchant<StripeMoneyInMerchantJpy>(9003, "Stripe Custom", "An example merchant", "JPY");
             });
 
             services.Configure<IISServerOptions>(options =>
