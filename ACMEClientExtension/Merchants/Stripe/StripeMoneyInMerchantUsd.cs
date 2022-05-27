@@ -14,6 +14,11 @@ namespace ACMEClientExtension.Merchants.Stripe
         {
         }
 
+        /// <summary>
+        /// Formats currency into the representation stripe expects.
+        /// </summary>
+        /// <param name="amount">The amount passed in from the order payment</param>
+        /// <remarks>Stripe expects currency amounts as an integer instead of a decimal. For example $12.25 USD must be sent as the integer 1225</remarks>
         public async override Task<int> FormatCurrency(double amount)
         {
             amount = amount * 100;
