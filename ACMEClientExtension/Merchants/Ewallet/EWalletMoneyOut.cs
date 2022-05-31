@@ -69,7 +69,7 @@ namespace ACMEClientExtension.Merchants.Ewallet
                 accountNumber = await ProvisionNewAccount(commissionPayment.AssociateId, commissionPayment.MerchantId, _merchantName);
             }
 
-            var payAssociate = await _ewalletService.AddToBalance(accountNumber, commissionPayment.Amount);
+            var payAssociate = await _ewalletService.AddToBalance(accountNumber, commissionPayment.Total);
 
             return await Task.FromResult(payAssociate);
         }

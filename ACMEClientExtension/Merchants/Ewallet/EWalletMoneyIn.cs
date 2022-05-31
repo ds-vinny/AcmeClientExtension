@@ -28,7 +28,7 @@ namespace ACMEClientExtension.Merchants.Ewallet
                 Amount = amount,
                 Currency = currencyCode,
                 ResponseId = Guid.NewGuid().ToString(),
-                Response = Guid.NewGuid().ToString(),
+                Response = "Not Provided",
                 TransactionNumber = Guid.NewGuid().ToString(),
                 Status = PaymentStatus.NotProvided,
                 AuthorizationCode = "N/A",
@@ -40,10 +40,12 @@ namespace ACMEClientExtension.Merchants.Ewallet
             if (result == Models.TransactionStatus.Success)
             {
                 paymentResponse.Status = PaymentStatus.Accepted;
+                paymentResponse.Response = "Accepted";
             }
             else if (result == Models.TransactionStatus.InsufficientFunds)
             {
                 paymentResponse.Status = PaymentStatus.Rejected;
+                paymentResponse.Response = "Insufficient Funds";
             }
 
             return await Task.FromResult(paymentResponse);

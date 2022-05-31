@@ -13,6 +13,7 @@ using DirectScale.Disco.Extension.Middleware.Models;
 using ACMEClientExtension.Hooks.Autoships;
 using ACMEClientExtension.Hooks.Orders;
 using ACMEClientExtension.Merchants.Ewallet;
+using ACMEClientExtension.Merchants.Ewallet.Interfaces;
 
 namespace ACMEClientExtension
 {
@@ -29,6 +30,7 @@ namespace ACMEClientExtension
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddSingleton<IEwalletService, EwalletService>();
 
             services.AddDirectScale(options =>
             {
