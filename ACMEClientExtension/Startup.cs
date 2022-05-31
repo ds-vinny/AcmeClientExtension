@@ -12,6 +12,7 @@ using DirectScale.Disco.Extension.Middleware;
 using DirectScale.Disco.Extension.Middleware.Models;
 using ACMEClientExtension.Hooks.Autoships;
 using ACMEClientExtension.Hooks.Orders;
+using ACMEClientExtension.Merchants.Ewallet;
 
 namespace ACMEClientExtension
 {
@@ -51,6 +52,9 @@ namespace ACMEClientExtension
 
                 // WebHooks
                 options.AddEventHandler("OrderCreated", "/api/webhooks/Order/CreateOrder");
+
+                options.AddMerchant<EWalletMoneyIn>(9100, "Ewallet Money In USD", "test", "USD");
+                options.AddMerchant<EWalletMoneyOut>(9101, "Ewallet Money Out USD", "test", "USD");
             });
 
             services.Configure<IISServerOptions>(options =>
