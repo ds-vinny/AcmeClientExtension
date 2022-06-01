@@ -12,7 +12,7 @@ namespace ACMEClientExtension.Merchants.Ewallet
 {
     public class EWalletMoneyIn : SinglePaymentMoneyInMerchant
     {
-        public const int MerchantId = 9100; // TODO: REMOVE
+        public const int MerchantId = 9100;
 
         private readonly IEwalletService _ewalletService;
         private readonly IAssociateService _associateService;
