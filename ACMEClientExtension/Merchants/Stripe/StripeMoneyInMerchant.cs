@@ -70,7 +70,7 @@ namespace ACMEClientExtension.Merchants.Stripe
             return await Task.FromResult((int)amount);
         }
 
-        public async override Task<AddPaymentFrameData> GetSavePaymentFrame(int merchantId, string payorId, int? associateId, string languageCode, string countryCode, Region region)
+        public async override Task<AddPaymentFrameData> GetSavePaymentFrame(string payorId, int? associateId, string languageCode, string countryCode, Region region)
         {
             var addPay = new AddPaymentFrameData
             {
