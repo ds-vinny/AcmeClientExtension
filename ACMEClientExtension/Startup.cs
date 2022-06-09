@@ -12,6 +12,7 @@ using DirectScale.Disco.Extension.Middleware;
 using DirectScale.Disco.Extension.Middleware.Models;
 using ACMEClientExtension.Hooks.Autoships;
 using ACMEClientExtension.Hooks.Orders;
+using ACMEClientExtension.Merchants;
 
 namespace ACMEClientExtension
 {
@@ -51,6 +52,9 @@ namespace ACMEClientExtension
 
                 // WebHooks
                 options.AddEventHandler("OrderCreated", "/api/webhooks/Order/CreateOrder");
+
+                // Merchants
+                options.AddMerchant<MyCommissionMerchant>(9001, "MyCommissionMerchant", "An Example Commission Merchant", "USD");
             });
 
             services.Configure<IISServerOptions>(options =>
