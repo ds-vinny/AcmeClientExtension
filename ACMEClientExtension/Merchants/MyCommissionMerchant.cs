@@ -9,16 +9,7 @@ namespace ACMEClientExtension.Merchants
 {
     public class MyCommissionMerchant : CommissionMerchant
     {
-        private const int _merchantId = 9001;
-        private const string _merchantName = "MyCommissionMerchant";
-
-
         private const string _accountNumber = "AccountNumber";
-        public IMoneyOutService _moneyOutService { get; set; }
-        public MyCommissionMerchant(IMoneyOutService moneyOutService)
-        {
-            _moneyOutService = moneyOutService ?? throw new ArgumentNullException(nameof(moneyOutService));
-        }
 
         public async override Task<CommissionPaymentResult[]> PayCommissions(int batchId, CommissionPayment[] payments)
         {
@@ -38,11 +29,11 @@ namespace ACMEClientExtension.Merchants
                 {
                     payAssociateResult = await PayAssociate(payments[i]);
                 }
-                catch (Exception) // do not let external calls stop the loop because some may have processed successfully.
+                catch (Exception e) // do not let external calls stop the loop because some may have processed successfully.
                 {
                     commissionPaymentResults[i].Status = CommissionPaymentStatus.Failed;
                     commissionPaymentResults[i].TransactionNumber = "transaction number from external system if applicable";
-                    commissionPaymentResults[i].ErrorMessage = "Error message from external payment vendor";
+                    commissionPaymentResults[i].ErrorMessage = e.Message;
                 }
 
                 if (payAssociateResult == "Success")
@@ -64,9 +55,11 @@ namespace ACMEClientExtension.Merchants
         {
             string accountNumber = "";
             bool accountProvisioned = commissionPayment.MerchantCustomFields.TryGetValue(_accountNumber, out accountNumber);
-            if (!accountProvisioned)
+
+            if (!accountProvisioned) // Accounts are automatically provisioned by the DS System prior calling PayCommissions() if ProvisionAccount() is implemented.
             {
-                accountNumber = await ProvisionNewAccount(commissionPayment.AssociateId, commissionPayment.MerchantId, _merchantName);
+                throw new Exception($"No Account is created for AssociateID: {commissionPayment.AssociateId} for MerchantID: {commissionPayment.MerchantId}");
+                // If desired, a call to the MoneyOutService.SetActiveOnFileMerchant() could be made here to try to provision the account again.
             }
 
             var payAssociate = "Success"; // Call out to third party merchant
@@ -74,35 +67,15 @@ namespace ACMEClientExtension.Merchants
             return await Task.FromResult(payAssociate);
         }
 
-        public async override Task ProvisionAccount(int associateId)
-        {
-            await ProvisionNewAccount(associateId, _merchantId, _merchantName);
-        }
-
-        private async Task<string> ProvisionNewAccount(int associateId, int merchantId, string merchantName)
-        {
-            var onFileMerchants = await _moneyOutService.GetOnFileMerchants(associateId);
-            bool alreadyProvisioned = onFileMerchants.FirstOrDefault(x => x.MerchantId == merchantId)?.CustomValues?.ContainsKey(_accountNumber) ?? false;
-
-            string accountNumber = "";
-            if (!alreadyProvisioned)
+        public async override Task<Dictionary<string, string>> ProvisionAccount(int associateId)
+        {          
+            string accountNumber = await CreateAssociateAccount(associateId);
+            var associateCustomValues = new Dictionary<string, string>()
             {
-                accountNumber = await CreateAssociateAccount(associateId);
-                var accountInfo = new OnFileMerchant()
-                {
-                    AssociateId = associateId,
-                    CustomValues = new Dictionary<string, string>()
-                    {
-                        { _accountNumber, accountNumber }
-                    },
-                    MerchantId = merchantId,
-                    MerchantName = merchantName
-                };
+                { _accountNumber, accountNumber }
+            };
 
-                await _moneyOutService.SetActiveOnFileMerchant(accountInfo);
-            }
-
-            return await Task.FromResult(accountNumber);
+            return await Task.FromResult(associateCustomValues);
         }
 
         private async Task<string> CreateAssociateAccount(int associateId)
