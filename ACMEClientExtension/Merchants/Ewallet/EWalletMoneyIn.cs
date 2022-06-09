@@ -12,8 +12,6 @@ namespace ACMEClientExtension.Merchants.Ewallet
 {
     public class EWalletMoneyIn : SinglePaymentMoneyInMerchant
     {
-        public const int MerchantId = 9100;
-
         private readonly IEwalletService _ewalletService;
         private readonly IAssociateService _associateService;
         public EWalletMoneyIn(IEwalletService ewalletService, IAssociateService associateService)
@@ -31,8 +29,7 @@ namespace ACMEClientExtension.Merchants.Ewallet
                 Response = "Not Provided",
                 TransactionNumber = Guid.NewGuid().ToString(),
                 Status = PaymentStatus.NotProvided,
-                AuthorizationCode = "N/A",
-                Merchant = MerchantId
+                AuthorizationCode = "N/A"
             };
 
             Models.TransactionStatus result = await _ewalletService.RemoveFromBalance(payerId, (decimal)amount);
