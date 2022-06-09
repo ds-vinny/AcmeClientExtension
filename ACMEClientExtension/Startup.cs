@@ -61,8 +61,6 @@ namespace ACMEClientExtension
                 // Merchants
                 options.AddMerchant<StripeMoneyInMerchantUsd>(9002, "Stripe Custom", "An example merchant", "USD");
                 options.AddMerchant<StripeMoneyInMerchantJpy>(9003, "Stripe Custom", "An example merchant", "JPY");
-
-                // Merchants
                 options.AddMerchant<MyCommissionMerchant>(9001, "MyCommissionMerchant", "An Example Commission Merchant", "USD");
             });
 
