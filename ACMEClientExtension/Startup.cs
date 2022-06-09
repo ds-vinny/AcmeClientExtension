@@ -14,6 +14,7 @@ using ACMEClientExtension.Hooks.Autoships;
 using ACMEClientExtension.Hooks.Orders;
 using ACMEClientExtension.Merchants.Stripe;
 using ACMEClientExtension.Merchants.Stripe.Interfaces;
+using ACMEClientExtension.Merchants;
 
 namespace ACMEClientExtension
 {
@@ -60,6 +61,9 @@ namespace ACMEClientExtension
                 // Merchants
                 options.AddMerchant<StripeMoneyInMerchantUsd>(9002, "Stripe Custom", "An example merchant", "USD");
                 options.AddMerchant<StripeMoneyInMerchantJpy>(9003, "Stripe Custom", "An example merchant", "JPY");
+
+                // Merchants
+                options.AddMerchant<MyCommissionMerchant>(9001, "MyCommissionMerchant", "An Example Commission Merchant", "USD");
             });
 
             services.Configure<IISServerOptions>(options =>
