@@ -15,6 +15,8 @@ using ACMEClientExtension.Hooks.Orders;
 using ACMEClientExtension.Merchants.Stripe;
 using ACMEClientExtension.Merchants.Stripe.Interfaces;
 using ACMEClientExtension.Merchants;
+using ACMEClientExtension.Merchants.Ewallet;
+using ACMEClientExtension.Merchants.Ewallet.Interfaces;
 
 namespace ACMEClientExtension
 {
@@ -31,6 +33,7 @@ namespace ACMEClientExtension
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddSingleton<IEwalletService, EwalletService>();
 
             services.AddSingleton<IStripeSettings, StripeSettings>();
             services.AddSingleton<IStripeService, StripeService>();
@@ -62,6 +65,8 @@ namespace ACMEClientExtension
                 options.AddMerchant<StripeMoneyInMerchantUsd>(9002, "Stripe Custom", "An example merchant", "USD");
                 options.AddMerchant<StripeMoneyInMerchantJpy>(9003, "Stripe Custom", "An example merchant", "JPY");
                 options.AddMerchant<MyCommissionMerchant>(9001, "MyCommissionMerchant", "An Example Commission Merchant", "USD");
+                options.AddMerchant<EWalletMoneyIn>(9100, "Ewallet Money In USD", "test", "USD");
+                options.AddMerchant<EWalletMoneyOut>(9101, "Ewallet Money Out USD", "test", "USD");
             });
 
             services.Configure<IISServerOptions>(options =>
