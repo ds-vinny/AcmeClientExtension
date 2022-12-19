@@ -60,6 +60,7 @@ namespace ACMEClientExtension
 
                 // WebHooks
                 options.AddEventHandler("CreateOrderEvent", "/api/webhooks/Order/CreateOrder");
+                options.AddEventHandler("DailyEvent", "/api/webhooks/DailyEvent");
                 
                 // Merchants
                 options.AddMerchant<StripeMoneyInMerchantUsd>(9002, "Stripe Custom", "An example merchant", "USD");
