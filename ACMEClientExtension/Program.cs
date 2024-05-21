@@ -1,3 +1,4 @@
+using DirectScale.Disco.Extension.Middleware;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -21,6 +22,14 @@ namespace ACMEClientExtension
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                })                
+                // https://docs.microsoft.com/en-us/dotnet/core/extensions/custom-logging-provider
+                .ConfigureLogging(builder =>
+                {
+                    builder.ClearProviders().AddDirectScaleLogger(configuration =>
+                    {
+                        configuration.LogLevel = LogLevel.Information;
+                    });
                 });
     }
 }
